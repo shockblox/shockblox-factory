@@ -5,7 +5,7 @@
         <NotAuthorized />
       </div>
       <div v-else>
-        <IDXGetDID />
+        <IDXSetBasicProfile />
       </div>
     </div>
   </div>
@@ -14,14 +14,14 @@
 <script>
 import NotAuthorized from '@/components/NotAuthorized'
 import ConnectWalletBtn from '@/components/ConnectWalletBtn'
-import IDXGetDID from '@/components/IDXGetDID'
+import IDXSetBasicProfile from '@/components/IDXSetBasicProfile'
 
 export default {
   name: 'Home',
   components: {
     NotAuthorized,
     ConnectWalletBtn,
-    IDXGetDID
+    IDXSetBasicProfile
   }
 }
 </script>

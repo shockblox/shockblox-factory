@@ -10,6 +10,5 @@ export function createIDX(ceramic) {
   // add, aliases after creating
   const idx = new IDX({ ceramic });
   window.idx = idx;
-  store.commit('setIDX', idx);
   return idx;
 }
