@@ -1,0 +1,49 @@
+// Import Fonts
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+// Colors
+$brand-primary: #14133B;
+$brand-secondary: #FF5CEF;
+$white: white;
+$black: black;
+
+// Fonts
+$body-font-family: 'Poppins', Arial, sans-serif;
+$body-font-weight: 500;
+$body-font-size: 16px;
+
+// Structure
+body {
+  font-family: $body-font-family;
+  font-weight: $body-font-weight;
+  font-size: $body-font-size;
+}
+
+// Navbar (specific to shockblox)
+.bg-dark {
+    background-color: $brand-primary !important;
+}
+
+// Buttons
+.btn {
+  &.btn-lg {
+    border-radius:12px;
+    border:none;
+    &.btn-primary {
+      background: $brand-primary;
+      color: $white;
+      &:hover {
+        background:lighten($brand-primary, 5%);
+        color: $white
+      }
+    }
+    &.btn-secondary {
+      background: $brand-secondary;
+      color: $white;
+      &:hover {
+        background:lighten($brand-secondary, 5%);
+        color: $white
+      }
+    }
+  }
+}
