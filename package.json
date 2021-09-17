@@ -1,0 +1,38 @@
+{
+  "name": "shockfactory",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@3id/connect": "^0.2.3",
+    "@ceramicnetwork/3id-did-resolver": "^1.4.2",
+    "@ceramicnetwork/http-client": "^1.2.2",
+    "@ceramicstudio/idx": "^0.12.2",
+    "@walletconnect/web3-provider": "^1.6.5",
+    "authereum": "^0.1.14",
+    "bootstrap": "^5.1.1",
+    "core-js": "^3.6.5",
+    "dids": "^2.4.0",
+    "fortmatic": "^2.2.1",
+    "key-did-resolver": "^1.4.0",
+    "register-service-worker": "^1.7.1",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0",
+    "vuex": "^4.0.0-0",
+    "web3modal": "^1.9.4"
+  },
+  "devDependencies": {
+    "@ceramicstudio/idx-tools": "^0.11.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-pwa": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2"
+  }
+}
