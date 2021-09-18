@@ -12,8 +12,10 @@
   <button
     v-else class="btn btn-lg btn-secondary me-3"
     @click="disconnect">
-      {{userDID}}
+      connected
   </button>
+  <button @click="getBasicProfile()">GET Profile</button>
+  {{profile}}
 </template>
 
 <script>
@@ -31,22 +33,21 @@ export default {
   name: 'Home',
   data() {
     return {
-      connecting: false
-    }
-  },
-  computed: {
-    userDID() {
-      if(!this.$store.state.userDID) {
-        return null
-      }
-      const userDID = this.$store.state.userDID
-      const firstStr = userDID.substring(0,8)
-      const lastStr = userDID.substr(userDID.length - 4)
-      const res = firstStr + '...' + lastStr
-      return res.toUpperCase()
+      connecting: false,
+      profile: null
     }
   },
   methods: {
+    async getBasicProfile() {
+      try {
+        console.log('idx from vuex store', this.$store.state.idx)
+        console.log('my did', this.$store.state.userDID)
+        const profile = await this.$store.state.idx.get('basicProfile', this.$store.state.userDID)
+        console.log(profile)
+      }catch(e) {
+        console.log(e)
+      }
+    },
     async authenticate() {
       const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
       const did = new DID({
@@ -59,6 +60,8 @@ export default {
       window.did = did
       ceramic.did = did
       const idx = createIDX(ceramic)
+      // Set idx to the store
+      this.$store.commit('setIDX', idx)
       return idx.id
     },
     async ethAddressToDID(address) {
@@ -75,7 +78,6 @@ export default {
       try {
         const id = await this.authenticate()
         // Commit the id to the store
-        console.log(id)
         this.$store.commit('setUserDID', id)
         // No longer connecting
         this.connecting = false
