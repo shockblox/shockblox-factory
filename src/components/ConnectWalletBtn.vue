@@ -12,10 +12,8 @@
   <button
     v-else class="btn btn-lg btn-secondary me-3"
     @click="disconnect">
-      connected
+      disconnect
   </button>
-  <button @click="getBasicProfile()">GET Profile</button>
-  {{profile}}
 </template>
 
 <script>
@@ -37,17 +35,12 @@ export default {
       profile: null
     }
   },
+  computed: {
+    userProfile() {
+      return this.$store.state.userProfile
+    }
+  },
   methods: {
-    async getBasicProfile() {
-      try {
-        console.log('idx from vuex store', this.$store.state.idx)
-        console.log('my did', this.$store.state.userDID)
-        const profile = await this.$store.state.idx.get('basicProfile', this.$store.state.userDID)
-        console.log(profile)
-      }catch(e) {
-        console.log(e)
-      }
-    },
     async authenticate() {
       const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
       const did = new DID({
@@ -59,9 +52,7 @@ export default {
       await did.authenticate()
       window.did = did
       ceramic.did = did
-      const idx = createIDX(ceramic)
-      // Set idx to the store
-      this.$store.commit('setIDX', idx)
+      const idx = await createIDX(ceramic)
       return idx.id
     },
     async ethAddressToDID(address) {

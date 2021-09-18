@@ -6,12 +6,16 @@
           <h1>Set Your Profile Info</h1>
           <div class="form-group mb-4">
             <label class="mb-3">Your Name</label>
-            <input type="text" v-model="basicProfileName" class="form-control" placeholder="Elon Musk...">
+            <input type="text" v-model="basicProfile.name" class="form-control" placeholder="Elon Musk...">
+          </div>
+          <div class="form-group mb-4">
+            <label class="mb-3">Short Bio</label>
+            <input type="text" v-model="basicProfile.description" class="form-control" placeholder="I own Tesla Motors, SpaceX and a whole bunch of other things...">
           </div>
           <div class="form-group mb-4">
             <button
               class="btn btn-primary btn-lg"
-              @click="setIDXBasicProfile()"
+              @click="setBasicProfile()"
               v-bind:class="{disabled: loading}"
               :disabled="loading"
             >
@@ -21,7 +25,7 @@
           </div>
           <div v-if="basicProfile" class="alert alert-info">
             <h6>Profile</h6>
-            {{basicProfile}}
+            {{userProfile}}
           </div>
           <div v-if="error" class="alert alert-info">{{error}}</div>
         </div>
@@ -31,31 +35,41 @@
 </template>
 
 <script>
+import { createIDX } from '@/dapp/config/idx'
 export default {
   data() {
     return {
-      basicProfileName: '',
-      basicProfile: null,
+      basicProfile: {
+        name: '',
+        description: ''
+      },
       loading: false,
       error: null
     }
   },
+  computed: {
+    userProfile() {
+      return this.$store.state.userProfile
+    }
+  },
   methods: {
-    async setIDXBasicProfile() {
-      if(!this.basicProfileName) {
+    async setBasicProfile() {
+      let ceramic = window.ceramic
+      ceramic.did = window.did
+      const idx = await createIDX(ceramic)
+      // Check if name and description are set, switch for real validation later
+      if(!this.basicProfile.name || !this.basicProfile.description) {
         return
       }
-      // Grab the record...
-      this.loading = true
-
       try {
-        // Get the alias... 
-
-        // Set the result and disable loading indicators
-        this.loading = false
+        // Set the profile
+        await idx.set('basicProfile', this.basicProfile)
+        // Get the profile
+        const profile = await idx.get('basicProfile')
+        // Commit the profile to the store
+        this.$store.commit('setUserProfile', profile)
       }catch(e) {
-        this.aliasError = e
-        this.loading = false
+        console.log(e)
       }
     }
   }
