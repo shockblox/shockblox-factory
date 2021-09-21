@@ -14,7 +14,6 @@
 
 <script>
 import NotAuthorized from '@/components/NotAuthorized'
-import * as Definitions from '@/idx/definitions'
 
 export default {
     name: 'DefinitionsCreate',
