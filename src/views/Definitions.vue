@@ -5,7 +5,17 @@
         <NotAuthorized />
       </div>
       <div v-else>
-        <DefList />
+        <div id="defList" class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <router-link to="/definitions/create" class="btn btn-primary float-end">+ Add Custom Definition</router-link>
+                <h1>My Definitions</h1>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -13,13 +23,11 @@
 
 <script>
 import NotAuthorized from '@/components/NotAuthorized'
-import DefList from '@/components/DefList'
 
 export default {
   name: 'Definitions',
   components: {
-    NotAuthorized,
-    DefList
+    NotAuthorized
   }
 }
 </script>
