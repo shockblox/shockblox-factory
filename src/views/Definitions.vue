@@ -5,7 +5,7 @@
         <NotAuthorized />
       </div>
       <div v-else>
-        <IDXSetBasicProfile />
+        <DefList />
       </div>
     </div>
   </div>
@@ -13,13 +13,13 @@
 
 <script>
 import NotAuthorized from '@/components/NotAuthorized'
-import IDXSetBasicProfile from '@/components/IDXSetBasicProfile'
+import DefList from '@/components/DefList'
 
 export default {
-  name: 'Home',
+  name: 'Definitions',
   components: {
     NotAuthorized,
-    IDXSetBasicProfile
+    DefList
   }
 }
 </script>
