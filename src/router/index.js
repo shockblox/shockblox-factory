@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
-import Definitions from '@/views/Definitions.vue';
-import DefinitionsCreate from '@/views/DefinitionsCreate.vue';
+import DappDirectory from '@/views/DappDirectory.vue';
+import DappCreate from '@/views/DappCreate.vue';
 
 const routes = [
   {
@@ -10,14 +10,14 @@ const routes = [
     component: Home,
   },
   {
-    path: '/definitions',
-    name: 'Definitions',
-    component: Definitions,
+    path: '/dapps',
+    name: 'DappDirectory',
+    component: DappDirectory,
   },
   {
-    path: '/definitions/create',
-    name: 'DefinitionsCreate',
-    component: DefinitionsCreate,
+    path: '/dapps/create',
+    name: 'DappCreate',
+    component: DappCreate,
   },
 ];
 

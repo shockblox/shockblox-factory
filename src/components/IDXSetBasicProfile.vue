@@ -50,7 +50,13 @@ export default {
   computed: {
     userProfile() {
       return this.$store.state.userProfile
+    },
+    idx() {
+      return JSON.parse(window.localStorage.getItem('idx'))
     }
+  },
+  mounted() {
+    this.getBasicProfile()
   },
   methods: {
     async setBasicProfile() {
@@ -71,6 +77,11 @@ export default {
       }catch(e) {
         console.log(e)
       }
+    },
+    async getBasicProfile() {
+      console.log('idx', this.idx)
+      // const profile = await this.idx.get('basicProfile')
+      // this.$store.commit('setUserProfile', profile)
     }
   }
 }

@@ -11,6 +11,7 @@ export default createStore({
   state: {
     userDID: null,
     userProfile: null,
+    ceramicDID: null,
     idx: null,
   },
   mutations: {
@@ -19,6 +20,12 @@ export default createStore({
     },
     setUserProfile(state, data) {
       state.userProfile = data;
+    },
+    setCeramicDID(state, data) {
+      state.ceramicDID = data;
+    },
+    setIDX(state, data) {
+      state.idx = data;
     },
   },
   modules: {},

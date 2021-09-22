@@ -9,8 +9,8 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <router-link to="/definitions/create" class="btn btn-primary float-end">+ Add Custom Definition</router-link>
-                <h1>My Definitions</h1>
+                <router-link to="/dapps/create" class="btn btn-primary float-end">+ Add dApp</router-link>
+                <h1>DApp Directory Listings</h1>
                 <div class="clearfix"></div>
               </div>
             </div>
@@ -25,7 +25,7 @@
 import NotAuthorized from '@/components/NotAuthorized'
 
 export default {
-  name: 'Definitions',
+  name: 'DappDirectory',
   components: {
     NotAuthorized
   }

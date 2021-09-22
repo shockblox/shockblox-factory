@@ -5,7 +5,7 @@
         <NotAuthorized />
       </div>
       <div v-else>
-        <h1>Create a Definition</h1>
+        <h1>Create a DApp</h1>
         <div class="alert alert-info">{{userDID}}</div>
       </div>
     </div>
@@ -16,7 +16,7 @@
 import NotAuthorized from '@/components/NotAuthorized'
 
 export default {
-    name: 'DefinitionsCreate',
+    name: 'DAppCreate',
     components: {
         NotAuthorized
     },

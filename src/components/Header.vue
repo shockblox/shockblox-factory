@@ -11,7 +11,7 @@
           <router-link to="/" class="nav-link active" aria-current="page">Profile</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/definitions" class="nav-link active" aria-current="page">Definitions</router-link>
+          <router-link to="/dapps" class="nav-link active" aria-current="page">DApp Directory</router-link>
         </li>
       </ul>
       <ConnectWalletBtn />
