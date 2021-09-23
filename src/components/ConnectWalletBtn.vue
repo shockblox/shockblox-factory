@@ -52,6 +52,7 @@ export default {
       await did.authenticate()
       window.did = did
       ceramic.did = did
+      this.$store.commit('setUserDID', did)
       const idx = await createIDX(ceramic)
       return idx.id
     },

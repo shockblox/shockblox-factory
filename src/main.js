@@ -8,6 +8,4 @@ let app = createApp(App)
   .use(store)
   .use(router);
 
-app.config.globalProperties.$idx = {};
-
 app.mount('#app');

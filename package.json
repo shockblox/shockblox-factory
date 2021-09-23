@@ -7,8 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "3id-resolver": "^1.0.1",
     "@3id/connect": "^0.2.3",
-    "@ceramicnetwork/3id-did-resolver": "^1.4.2",
+    "@ceramicnetwork/3id-did-resolver": "^1.4.3",
     "@ceramicnetwork/http-client": "^1.2.2",
     "@ceramicstudio/idx": "^0.12.2",
     "@walletconnect/web3-provider": "^1.6.5",
@@ -16,6 +17,7 @@
     "bootstrap": "^5.1.1",
     "circular-json": "^0.5.9",
     "core-js": "^3.6.5",
+    "did-resolver": "^3.1.0",
     "dids": "^2.4.0",
     "flatted": "^3.2.2",
     "fortmatic": "^2.2.1",

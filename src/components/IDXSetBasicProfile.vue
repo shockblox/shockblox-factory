@@ -35,7 +35,18 @@
 </template>
 
 <script>
+import { DID } from 'dids'
+import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver'
+import KeyDidResolver from 'key-did-resolver'
+import { Resolver } from 'did-resolver'
+
+import Ceramic from '@ceramicnetwork/http-client';
+import { createCeramic } from '@/dapp/config/ceramic'
 import { createIDX } from '@/dapp/config/idx'
+import { getProvider } from '@/dapp/config/wallet'
+
+const ceramicPromise = createCeramic()
+
 export default {
   data() {
     return {
@@ -48,11 +59,14 @@ export default {
     }
   },
   computed: {
+    userDID() {
+      return this.$store.state.userDID
+    },
     userProfile() {
       return this.$store.state.userProfile
     },
     idx() {
-      return JSON.parse(window.localStorage.getItem('idx'))
+      return this.$store.state.idx
     }
   },
   mounted() {
@@ -60,16 +74,13 @@ export default {
   },
   methods: {
     async setBasicProfile() {
-      let ceramic = window.ceramic
-      ceramic.did = window.did
-      const idx = await createIDX(ceramic)
       // Check if name and description are set, switch for real validation later
       if(!this.basicProfile.name || !this.basicProfile.description) {
         return
       }
       try {
         // Set the profile
-        await idx.set('basicProfile', this.basicProfile)
+        await this.$idx.set('basicProfile', this.basicProfile)
         // Get the profile
         const profile = await idx.get('basicProfile')
         // Commit the profile to the store
@@ -79,9 +90,13 @@ export default {
       }
     },
     async getBasicProfile() {
-      console.log('idx', this.idx)
-      // const profile = await this.idx.get('basicProfile')
-      // this.$store.commit('setUserProfile', profile)
+      const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
+      const did = new DID({
+        provider,
+        resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
+      })
+      did.id = this.userDID
+      console.log(did)
     }
   }
 }
