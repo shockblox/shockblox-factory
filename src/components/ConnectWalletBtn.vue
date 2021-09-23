@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { ThreeIdConnect,  EthereumAuthProvider } from '@3id/connect'
 import { DID } from 'dids'
 import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver'
 import KeyDidResolver from 'key-did-resolver'
@@ -50,7 +51,6 @@ export default {
       // Connecting wallet...
       this.connecting = true
       await did.authenticate()
-      window.did = did
       ceramic.did = did
       this.$store.commit('setUserDID', did)
       const idx = await createIDX(ceramic)

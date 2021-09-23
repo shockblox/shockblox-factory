@@ -38,12 +38,9 @@
 import { DID } from 'dids'
 import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver'
 import KeyDidResolver from 'key-did-resolver'
-import { Resolver } from 'did-resolver'
-
-import Ceramic from '@ceramicnetwork/http-client';
 import { createCeramic } from '@/dapp/config/ceramic'
-import { createIDX } from '@/dapp/config/idx'
 import { getProvider } from '@/dapp/config/wallet'
+import { createIDX } from '@/dapp/config/idx'
 
 const ceramicPromise = createCeramic()
 
@@ -78,9 +75,20 @@ export default {
       if(!this.basicProfile.name || !this.basicProfile.description) {
         return
       }
+      const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
+      let did = new DID({
+        provider,
+        resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
+      })
+      did = await did.resolve(this.userDID)
+      console.log(did)
+      ceramic.did = did
+      const idx = await createIDX(ceramic)
+      console.log(idx)
+
       try {
         // Set the profile
-        await this.$idx.set('basicProfile', this.basicProfile)
+        await idx.set('basicProfile', this.basicProfile)
         // Get the profile
         const profile = await idx.get('basicProfile')
         // Commit the profile to the store
@@ -90,13 +98,33 @@ export default {
       }
     },
     async getBasicProfile() {
+      // Failing implementation #1
+      // const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
+      // let did = new DID({
+      //   provider,
+      //   resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
+      // })
+      // did = await did.resolve(this.userDID)
+      // console.log(did)
+      // ceramic.did = did
+      // const idx = await createIDX(ceramic)
+      // const profile = await idx.get('basicProfile')
+      // console.log('profile', profile)
+      // this.$store.commit('setUserProfile', profile)
+
+      // Failing implementation #2
       const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
       const did = new DID({
         provider,
         resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
       })
-      did.id = this.userDID
-      console.log(did)
+      const didDoc = await did.resolve('did:3:kjzl6cwe1jw146q0kev6tjjbhwb7mqxnwxepua0gelvxcqkzwgrd26wh37ag9gb')
+      ceramic.did = didDoc.didDocument
+      const idx = await createIDX(ceramic)
+      const profile = await idx.set('basicProfile', {name: 'fromjs', description: 'tojs'})
+      console.log(profile)
+
+      // IS THERE NO WAY TO REINSTANTIATE IDX FROM AN ALREADY AUTHORIZED 3ID DID?
     }
   }
 }
