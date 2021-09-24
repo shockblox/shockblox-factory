@@ -75,54 +75,41 @@ export default {
       if(!this.basicProfile.name || !this.basicProfile.description) {
         return
       }
-      const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
-      let did = new DID({
-        provider,
-        resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
-      })
-      did = await did.resolve(this.userDID)
-      console.log(did)
-      ceramic.did = did
-      const idx = await createIDX(ceramic)
-      console.log(idx)
-
-      try {
-        // Set the profile
-        await idx.set('basicProfile', this.basicProfile)
-        // Get the profile
-        const profile = await idx.get('basicProfile')
-        // Commit the profile to the store
-        this.$store.commit('setUserProfile', profile)
-      }catch(e) {
-        console.log(e)
-      }
-    },
-    async getBasicProfile() {
-      // Failing implementation #1
-      // const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
-      // let did = new DID({
-      //   provider,
-      //   resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
-      // })
-      // did = await did.resolve(this.userDID)
-      // console.log(did)
-      // ceramic.did = did
-      // const idx = await createIDX(ceramic)
-      // const profile = await idx.get('basicProfile')
-      // console.log('profile', profile)
-      // this.$store.commit('setUserProfile', profile)
-
-      // Failing implementation #2
+      // Set up IDX
       const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
       const did = new DID({
         provider,
         resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
       })
-      const didDoc = await did.resolve('did:3:kjzl6cwe1jw146q0kev6tjjbhwb7mqxnwxepua0gelvxcqkzwgrd26wh37ag9gb')
-      ceramic.did = didDoc.didDocument
+      // Connecting wallet...
+      this.connecting = true
+      await did.authenticate()
+      ceramic.did = did
+      this.$store.commit('setUserDID', did)
       const idx = await createIDX(ceramic)
-      const profile = await idx.set('basicProfile', {name: 'fromjs', description: 'tojs'})
-      console.log(profile)
+
+      try {
+        // Set the profile
+        await idx.set('basicProfile', this.basicProfile)
+        this.getBasicProfile()
+      }catch(e) {
+        console.log(e)
+      }
+    },
+    async getBasicProfile() {
+      const [ceramic, provider] = await Promise.all([ceramicPromise, getProvider()])
+      const did = new DID({
+        provider,
+        resolver: { ...KeyDidResolver.getResolver(), ...ThreeIdResolver.getResolver(ceramic) },
+      })
+      // Connecting wallet...
+      this.connecting = true
+      await did.authenticate()
+      ceramic.did = did
+      this.$store.commit('setUserDID', did)
+      const idx = await createIDX(ceramic)
+      const profile = await idx.get('basicProfile')
+      this.$store.commit('setUserProfile', profile)
 
       // IS THERE NO WAY TO REINSTANTIATE IDX FROM AN ALREADY AUTHORIZED 3ID DID?
     }
